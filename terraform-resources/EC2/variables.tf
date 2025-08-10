@@ -16,6 +16,7 @@ variable "tags" {
 variable "cli_user_name" {
   description = "IAM username to attach SSM session policy for AWS CLI"
   type        = string
+  default = "value_not_set" # Set this to your desired CLI user name
 }
 
 # Optional, if attaching to role instead
