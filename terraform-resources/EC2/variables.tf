@@ -25,3 +25,4 @@ variable "cli_role_name" {
   type        = string
   default     = "siva-role" # Set this to your desired CLI role name
 }
+variable "key_name" {}
