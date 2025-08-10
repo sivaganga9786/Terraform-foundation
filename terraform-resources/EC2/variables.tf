@@ -13,3 +13,14 @@ variable "tags" {
   default = {}
 }
 
+variable "cli_user_name" {
+  description = "IAM username to attach SSM session policy for AWS CLI"
+  type        = string
+}
+
+# Optional, if attaching to role instead
+variable "cli_role_name" {
+  description = "IAM role name to attach SSM session policy"
+  type        = string
+  default     = ""
+}
