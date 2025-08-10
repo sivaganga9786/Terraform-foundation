@@ -1,3 +1,4 @@
+# main.tf - Phase 1: Create S3 bucket
 terraform {
   required_version = ">= 1.3.0"
 
@@ -38,5 +39,3 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
     }
   }
 }
-
-
