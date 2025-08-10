@@ -62,7 +62,7 @@ resource "aws_instance" "this" {
 # === IAM Policy for your AWS CLI User or Role to allow SSM session start ===
 resource "aws_iam_policy" "ssm_session_management_policy" {
   name        = "${var.name_prefix}-ssm-session-policy"
-  description = "Allow SSM session start and management for CLI user/role"
+  description = "Allow SSM session start and management including port forwarding"
   policy      = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -73,7 +73,8 @@ resource "aws_iam_policy" "ssm_session_management_policy" {
           "ssm:DescribeInstanceInformation",
           "ssm:DescribeSessions",
           "ssm:TerminateSession",
-          "ssm:ResumeSession"
+          "ssm:ResumeSession",
+          "ssm:StartPortForwardingSession"
         ]
         Resource = "*"
       }
