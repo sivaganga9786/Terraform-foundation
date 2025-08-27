@@ -1,1 +1,1 @@
-# E-Com-Application-Automation
+# AWS Resources
