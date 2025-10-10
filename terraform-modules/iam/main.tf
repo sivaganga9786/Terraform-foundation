@@ -1,13 +1,39 @@
+# Create IAM role
 resource "aws_iam_role" "this" {
-  name = var.role_name
-
+  name               = var.role_name
   assume_role_policy = var.assume_role_policy
 }
 
-# Attach managed policy (AmazonEC2RoleforSSM)
-resource "aws_iam_role_policy_attachment" "ssm_attach" {
+# Attach AWS managed policies
+resource "aws_iam_role_policy_attachment" "managed" {
+  for_each   = toset(var.managed_policy_arns)
   role       = aws_iam_role.this.name
-  policy_arn = var.policy_arn
+  policy_arn = each.value
+}
+
+# Default "full access" inline policy covering all AWS services
+resource "aws_iam_role_policy" "full_access_inline" {
+  count  = var.full_access_default ? 1 : 0
+  name   = "${var.role_name}-full-access"
+  role   = aws_iam_role.this.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "*"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Extra inline policies per project
+resource "aws_iam_role_policy" "extra_inline" {
+  for_each = var.extra_inline_policies
+  name     = each.key
+  role     = aws_iam_role.this.name
+  policy   = each.value
 }
 
 # Create instance profile
