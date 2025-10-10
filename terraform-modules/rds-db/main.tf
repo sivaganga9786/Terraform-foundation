@@ -13,6 +13,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   publicly_accessible     = var.publicly_accessible
   backup_retention_period = var.backup_retention_period
+  skip_final_snapshot = true
 
   tags = { Name = var.db_instance_identifier }
 }
