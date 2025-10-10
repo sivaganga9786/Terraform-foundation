@@ -13,7 +13,7 @@ resource "aws_subnet" "private" {
   count             = length(var.private_subnet_cidrs)
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_cidrs[count.index]
-  availability_zone = var.availability_zones[count.index]
+  availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
 
   # tags = {
   #   Name                                           = "${var.cluster_name}-private-${count.index + 1}"
@@ -83,7 +83,9 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main[count.index].id
+   # nat_gateway_id = aws_nat_gateway.main[count.index].id
+    nat_gateway_id = aws_nat_gateway.main[count.index % length(aws_nat_gateway.main)].id
+
   }
 
   # tags = {
