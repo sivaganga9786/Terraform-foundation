@@ -8,9 +8,6 @@ variable "db_subnets" {
   description = "List of private subnet IDs for the DB subnet group"
 }
 
-variable "project_name" {
-  type        = string
-}
 
 variable "db_subnet_group_name" {
   type        = string
