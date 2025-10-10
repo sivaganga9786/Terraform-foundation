@@ -3,10 +3,9 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  # tags = {
-  #   Name                                           = "${var.cluster_name}-vpc"
-  #   "kubernetes.io/cluster/${var.cluster_name}"    = "shared"
-  # }
+  tags = {
+    Name  = "${var.cluster_name}-vpc"
+  }
 }
 
 resource "aws_subnet" "private" {
@@ -16,11 +15,9 @@ resource "aws_subnet" "private" {
   #availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
   availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
 
-  # tags = {
-  #   Name                                           = "${var.cluster_name}-private-${count.index + 1}"
-  #   "kubernetes.io/cluster/${var.cluster_name}"    = "shared"
-  #   "kubernetes.io/role/internal-elb"              = "1"
-  # }
+  tags = {
+    Name                                           = "${var.cluster_name}-private-${count.index + 1}"
+   }
 }
 
 resource "aws_subnet" "public" {
@@ -31,28 +28,26 @@ resource "aws_subnet" "public" {
 
   map_public_ip_on_launch = true
 
-  # tags = {
-  #   Name                                           = "${var.cluster_name}-public-${count.index + 1}"
-  #   "kubernetes.io/cluster/${var.cluster_name}"    = "shared"
-  #   "kubernetes.io/role/elb"                       = "1"
-  # }
+  tags = {
+     Name                                           = "${var.cluster_name}-public-${count.index + 1}"
+ }
 }
 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
-  # tags = {
-  #   Name = "${var.cluster_name}-igw"
-  # }
+  tags = {
+   Name = "${var.cluster_name}-igw"
+  }
 }
 
 resource "aws_eip" "nat" {
   count = length(var.public_subnet_cidrs)
   domain = "vpc"
 
-  # tags = {
-  #   Name = "${var.cluster_name}-nat-${count.index + 1}"
-  # }
+  tags = {
+     Name = "${var.cluster_name}-nat-${count.index + 1}"
+   }
 }
 
 resource "aws_nat_gateway" "main" {
@@ -60,9 +55,9 @@ resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
-  # tags = {
-  #   Name = "${var.cluster_name}-nat-${count.index + 1}"
-  # }
+   tags = {
+     Name = "${var.cluster_name}-nat-${count.index + 1}"
+   }
 }
 
 resource "aws_route_table" "public" {
@@ -73,9 +68,9 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-  # tags = {
-  #   Name = "${var.cluster_name}-public"
-  # }
+  tags = {
+     Name = "${var.cluster_name}-public"
+   }
 }
 
 resource "aws_route_table" "private" {
@@ -89,9 +84,9 @@ resource "aws_route_table" "private" {
 
   }
 
-  # tags = {
-  #   Name = "${var.cluster_name}-private-${count.index + 1}"
-  # }
+  tags = {
+    Name = "${var.cluster_name}-private-${count.index + 1}"
+   }
 }
 
 resource "aws_route_table_association" "private" {
