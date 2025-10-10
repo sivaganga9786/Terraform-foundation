@@ -16,7 +16,8 @@ resource "aws_subnet" "private" {
   availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
 
   tags = {
-    Name                                           = "${var.cluster_name}-private-${count.index + 1}"
+    Name  = "${var.cluster_name}-private-${count.index + 1}"
+    Role = count.index < 2 ? "app" : "db"   # first 2 = app, next 2 = db
    }
 }
 
@@ -29,7 +30,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-     Name                                           = "${var.cluster_name}-public-${count.index + 1}"
+     Name   = "${var.cluster_name}-public-${count.index + 1}"
  }
 }
 
