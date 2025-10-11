@@ -18,3 +18,7 @@ variable "final_snapshot_identifier" {
   type    = string
   default = ""
 }
+variable "deletion_protection" {
+  type    = bool
+  default = false
+}
