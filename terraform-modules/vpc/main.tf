@@ -20,7 +20,7 @@ resource "aws_subnet" "private" {
   #   Role = count.index < 2 ? "app" : "db"   # first 2 = app, next 2 = db
   #  }
   tags = {
-      Name = count.index < 2 ? "${var.cluster_name}-app-${count.index + 1}" : "${var.cluster_name}-web-${count.index - 1}"
+      Name = count.index < 2 ? "${var.cluster_name}-app-tier-${count.index + 1}" : "${var.cluster_name}-db-tier-${count.index - 1}"
       Role = count.index < 2 ? "app-tier" : "db-tier"
     }
 }
