@@ -15,11 +15,16 @@ resource "aws_subnet" "private" {
   #availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
   availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
 
+  # tags = {
+  #   Name  = "${var.cluster_name}-private-${count.index + 1}"
+  #   Role = count.index < 2 ? "app" : "db"   # first 2 = app, next 2 = db
+  #  }
   tags = {
-    Name  = "${var.cluster_name}-private-${count.index + 1}"
-    Role = count.index < 2 ? "app" : "db"   # first 2 = app, next 2 = db
-   }
+      Name = count.index < 2 ? "${var.cluster_name}-app-${count.index + 1}" : "${var.cluster_name}-web-${count.index - 1}"
+      Role = count.index < 2 ? "app" : "web"
+    }
 }
+
 
 resource "aws_subnet" "public" {
   count             = length(var.public_subnet_cidrs)
