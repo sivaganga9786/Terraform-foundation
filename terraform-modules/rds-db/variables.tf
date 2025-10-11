@@ -13,7 +13,6 @@ variable "backup_retention_period" { type = number }
 variable "vpc_security_group_ids" { type = list(string) }
 variable "skip_final_snapshot" {
   type    = bool
-  default = false
 }
 variable "final_snapshot_identifier" {
   type    = string

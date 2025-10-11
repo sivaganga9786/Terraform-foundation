@@ -15,6 +15,8 @@ resource "aws_db_instance" "this" {
   backup_retention_period = var.backup_retention_period
   skip_final_snapshot = var.skip_final_snapshot
   final_snapshot_identifier = var.final_snapshot_identifier != "" ? var.final_snapshot_identifier : null
+  deletion_protection       = false
+ 
 
   tags = { Name = var.db_instance_identifier }
 }
