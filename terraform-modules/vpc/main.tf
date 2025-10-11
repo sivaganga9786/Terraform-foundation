@@ -21,7 +21,7 @@ resource "aws_subnet" "private" {
   #  }
   tags = {
       Name = count.index < 2 ? "${var.cluster_name}-app-${count.index + 1}" : "${var.cluster_name}-web-${count.index - 1}"
-      Role = count.index < 2 ? "app" : "db"
+      Role = count.index < 2 ? "app-tier" : "db-tier"
     }
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-     Name   = "${var.cluster_name}-public-${count.index + 1}"
+     Name   = "${var.cluster_name}-web-tier-${count.index + 1}"
  }
 }
 
